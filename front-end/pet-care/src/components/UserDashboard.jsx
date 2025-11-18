@@ -6,13 +6,17 @@ import car from '../assets/ca.png';
 import about from '../assets/abb.png';
 import profile from '../assets/dp.png';
 import notify from '../assets/notif.png';
-import Appointment from './Appointment'; 
+import Appointment from './Appointment';
+import Notification from './Notification';
 
 function UserDashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [notification, setNotification] = useState(null);
+  
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,6 +25,15 @@ function UserDashboard() {
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Handle scroll effects
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Handle modal open/close by hash
@@ -45,6 +58,39 @@ function UserDashboard() {
   };
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const showNotificationAlert = (title, message, type = 'info') => {
+    setNotification({ title, message, type });
+  };
+
+  const handleNotificationClick = () => {
+    // Example schedule notifications
+    const scheduleNotifications = [
+      {
+        title: '📅 Upcoming Appointment',
+        message: 'Your pet has a vaccination appointment on Nov 20, 2025 at 2:00 PM',
+        type: 'info'
+      },
+      {
+        title: '⏰ Appointment Reminder',
+        message: 'Grooming session scheduled for tomorrow at 10:00 AM',
+        type: 'warning'
+      },
+      {
+        title: '✅ Appointment Completed',
+        message: 'Health checkup was completed successfully',
+        type: 'success'
+      },
+      {
+        title: '🔔 Pending Vaccination',
+        message: 'Your pet needs a booster shot. Book an appointment now!',
+        type: 'warning'
+      }
+    ];
+
+    const randomNotification = scheduleNotifications[Math.floor(Math.random() * scheduleNotifications.length)];
+    showNotificationAlert(randomNotification.title, randomNotification.message, randomNotification.type);
+  };
 
   const services = [
     {
@@ -89,6 +135,16 @@ function UserDashboard() {
 
   return (
     <div className="app">
+      {notification && (
+        <Notification
+          title={notification.title}
+          message={notification.message}
+          type={notification.type}
+          duration={5000}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
       {/* Decorative elements */}
       <div className="decorative-elements">
         <div className="bubble bubble-1"></div>
@@ -120,12 +176,16 @@ function UserDashboard() {
           </nav>
 
           <div className="profile">
-            <div className="notify">
+            <button 
+              className="notify-btn"
+              onClick={handleNotificationClick}
+              title="View schedule notifications"
+            >
               <div
                 className="notif"
                 style={{ backgroundImage: `url(${notify})` }}
               ></div>
-            </div>
+            </button>
             <div
               className="prof"
               onClick={() => navigate('/profile')}
@@ -233,7 +293,7 @@ function UserDashboard() {
                 <div className="circle circle-4"></div>
               </div>
               <div className="image-frame" style={{ backgroundImage: `url(${car})` }}>
-                <img className="app-image" alt="decor" />
+                <img className="app-image" alt=""/>
               </div>
             </div>
           </div>
@@ -270,7 +330,7 @@ function UserDashboard() {
 
           <div className="ab-image-section">
             <div className="ab-image-frame" style={{ backgroundImage: `url(${about})` }}>
-              <img className="ab-app-image" alt="about" />
+              <img className="ab-app-image" alt="" />
             </div>
           </div>
         </div>

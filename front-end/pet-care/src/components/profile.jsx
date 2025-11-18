@@ -8,6 +8,7 @@ import { getUser } from '../api/authApi';
 import {getUserPets} from '../api/petApi'
 import UserPet from './UserPet';
 import AppointmentSection from './UserAppointment';
+import Notification from './Notification';
 
 
 function UserDashboard() {
@@ -18,6 +19,7 @@ function UserDashboard() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('pending');
+  const [notification, setNotification] = useState(null);
   const navigate = useNavigate();
   
 
@@ -26,7 +28,56 @@ function UserDashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  // Show initial welcome notification
+  useEffect(() => {
+    setNotification({
+      title: 'Welcome Back!',
+      message: `Hello ${user?.first_name || 'User'}! Your profile is ready.`,
+      type: 'success'
+    });
+  }, [user?.first_name]);
+
+  const showNotification = (title, message, type = 'info') => {
+    setNotification({ title, message, type });
+  };
+
+  const handleEditProfile = () => {
+    showNotification('Edit Profile', 'Profile editing feature coming soon!', 'info');
+  };
+
+  const handleAddPet = () => {
+    showNotification('Add Pet', 'New pet form will open soon!', 'info');
+  };
+
+  const handleNotificationClick = () => {
+    // Example schedule notifications - you can replace with real data
+    const scheduleNotifications = [
+      {
+        title: '📅 Upcoming Appointment',
+        message: 'Your pet "Buddy" has a vaccination appointment on Nov 20, 2025 at 2:00 PM',
+        type: 'info'
+      },
+      {
+        title: '⏰ Appointment Reminder',
+        message: 'Grooming session for "Max" scheduled for tomorrow at 10:00 AM',
+        type: 'warning'
+      },
+      {
+        title: '✅ Appointment Completed',
+        message: 'Health checkup for "Luna" was completed successfully',
+        type: 'success'
+      },
+      {
+        title: '🔔 Pending Vaccination',
+        message: 'Your pet needs a booster shot. Book an appointment now!',
+        type: 'warning'
+      }
+    ];
+
+    // Show a random notification or cycle through them
+    const randomNotification = scheduleNotifications[Math.floor(Math.random() * scheduleNotifications.length)];
+    showNotification(randomNotification.title, randomNotification.message, randomNotification.type);
+  };
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -34,6 +85,16 @@ function UserDashboard() {
 
   return (
     <div className="app">
+      {notification && (
+        <Notification
+          title={notification.title}
+          message={notification.message}
+          type={notification.type}
+          duration={5000}
+          onClose={() => setNotification(null)}
+        />
+      )}
+      
       <header className="header">
         <div className="header-content">
           <div className="logo-section">
@@ -51,9 +112,13 @@ function UserDashboard() {
           </nav>
 
           <div className="profile">
-            <div className="notify">
+            <button 
+              className="notify-btn"
+              onClick={handleNotificationClick}
+              title="View schedule notifications"
+            >
               <div className="notif" style={{ backgroundImage: `url(${notify})` }}></div>
-            </div>
+            </button>
             <div className="prof" onClick={() => navigate('/profile')} style={{ backgroundImage: `url(${profile})` }}></div>
           </div>
 
@@ -115,7 +180,7 @@ function UserDashboard() {
                   {user?.email}
                 </p>
               </div>
-              <button className="btn-edit">
+              <button className="btn-edit" onClick={handleEditProfile}>
                 <Edit2 size={16} />
                 Edit Profile
               </button>
