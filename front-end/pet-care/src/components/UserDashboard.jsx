@@ -21,12 +21,13 @@ function UserDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Animate hero text
+
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
+<<<<<<< HEAD
   // Handle scroll effects
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +38,9 @@ function UserDashboard() {
   }, []);
 
   // Handle modal open/close by hash
+=======
+
+>>>>>>> c04487b25becdd10b5c2cab2e1eb682b4e52d2cb
   useEffect(() => {
     if (location.hash === '#appointment') {
       setShowModal(true);
@@ -125,7 +129,7 @@ function UserDashboard() {
     },
   ];
 
-  // Auto carousel
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % services.length);
