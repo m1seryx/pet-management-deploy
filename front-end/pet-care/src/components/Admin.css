@@ -238,7 +238,7 @@
   
   #sidebar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
-  }/* -------- Pending & Recent Activity Section -------- */
+  }
 
 .approval-section {
   margin-top: 3rem;
@@ -247,7 +247,7 @@
   gap: 2rem;
 }
 
-/* PENDING APPROVALS */
+
 .pending-box {
   background: #ffffff;
   border-radius: 20px;

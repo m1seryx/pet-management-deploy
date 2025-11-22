@@ -167,10 +167,24 @@ function UserDashboard() {
               </a>
             </li>
             <li>
-              <a href="#pets">
+              <button 
+                onClick={() => navigate('/pet-profile')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '12px 16px',
+                  width: '100%',
+                  cursor: 'pointer',
+                  color: 'inherit',
+                  fontSize: 'inherit'
+                }}
+              >
                 <Heart size={20} />
                 <span>Pet Profile</span>
-              </a>
+              </button>
             </li>
             <li>
               <a href="#appointments">
