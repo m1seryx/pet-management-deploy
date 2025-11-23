@@ -15,6 +15,7 @@ import BillingSection from './BillingSection';
 import UserPet from './UserPet';
 
 function UserDashboard() {
+  console.log('UserPet import fixed - profile loading');
   const user = getUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notification, setNotification] = useState(null);
