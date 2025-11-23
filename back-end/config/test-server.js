@@ -1,4 +1,5 @@
 // db.js = your MySQL connection file
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const db = require('./db'); // your MySQL connection
 

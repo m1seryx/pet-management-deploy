@@ -1,15 +1,22 @@
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',        
   port: process.env.DB_PORT || 3306,               
   user: process.env.DB_USER || 'root',             
   password: process.env.DB_PASSWORD || '',        
   database: process.env.DB_NAME || 'pet_management', 
-  ssl: process.env.DB_HOST ? { rejectUnauthorized: true } : false 
+  ssl: process.env.DB_HOST ? { 
+    rejectUnauthorized: false,
+    secure: true
+  } : false,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect((err) => {
+// Test connection
+pool.getConnection((err, connection) => {
   if (err) {
     console.error("Database connection failed:", err);
   } else {
@@ -17,7 +24,8 @@ db.connect((err) => {
       "Connected to Clever Cloud MySQL" : 
       "Connected to MySQL (XAMPP)"
     );
+    connection.release(); // Return to pool
   }
 });
 
-module.exports = db;
+module.exports = pool;
