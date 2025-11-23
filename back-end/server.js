@@ -7,7 +7,7 @@ require('./config/schemaMigrations');
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(cors({
-  origin: ['https://your-vercel-app.vercel.app', 'http://localhost:3000'],
+  origin: ['https://pet-care-mauve-pi.vercel.app/', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.static('views'));
