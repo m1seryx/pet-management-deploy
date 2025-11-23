@@ -61,6 +61,15 @@ app.get('/test-db', (req, res) => {
   });
 });
 
+// Serve PayPal pages
+app.get('/paypal-success.html', (req, res) => {
+  res.sendFile(__dirname + '/views/paypal-success.html');
+});
+
+app.get('/paypal-cancel.html', (req, res) => {
+  res.sendFile(__dirname + '/views/paypal-cancel.html');
+});
+
 app.listen(5000, () => {
   console.log('Server running on port 5000');
   console.log('CORS fixed for Vercel domain');
