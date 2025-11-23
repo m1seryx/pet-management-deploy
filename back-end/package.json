@@ -1,7 +1,8 @@
 {
-  "scripts": {
-    "devStart": "nodemon server.js"
-  },
+ "scripts": {
+  "start": "node server.js",    
+  "devStart": "nodemon server.js"
+},
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
     "axios": "^1.6.0",

@@ -39,6 +39,25 @@ app.use('/analytics', analyticsRoutes);
 
 app.use("/api/payment", require("./routes/paymentRoutes"));
 
+// Test database connection endpoint
+app.get('/test-db', (req, res) => {
+  db.query('SELECT NOW() AS currentTime, DATABASE() AS currentDatabase', (err, result) => {
+    if (err) {
+      return res.status(500).json({ 
+        success: false, 
+        error: err.message,
+        details: 'Database connection failed'
+      });
+    }
+    res.json({ 
+      success: true, 
+      message: 'Database connected successfully',
+      dbTime: result[0].currentTime,
+      database: result[0].currentDatabase,
+      host: process.env.DB_HOST || 'localhost'
+    });
+  });
+});
 
 app.listen(5000, () => {
   console.log('Server running on port 5000');
