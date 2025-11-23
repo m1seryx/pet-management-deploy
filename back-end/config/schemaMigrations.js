@@ -31,6 +31,7 @@ const runMigrations = () => {
   addColumnSafely('service', 'price', 'DECIMAL(10,2) DEFAULT 0');
   addColumnSafely('appointment', 'cancellation_reason', 'VARCHAR(255) NULL');
   addColumnSafely('notification', 'created_at', 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
+  addColumnSafely('notification', 'notification_id', 'INT AUTO_INCREMENT PRIMARY KEY');
   addColumnSafely('pet', 'birthdate', 'DATE NULL');
   addColumnSafely('pet', 'species', 'VARCHAR(50) NULL');
   addColumnSafely('user', 'profile_picture', 'LONGTEXT NULL');

@@ -12,6 +12,7 @@ import AppointmentSection from './UserAppointment';
 import Notification from './Notification';
 import { getUserNotifications } from '../api/notificationApi';
 import BillingSection from './BillingSection';
+import UserPet from './UserPet';
 
 function UserDashboard() {
   const user = getUser();
