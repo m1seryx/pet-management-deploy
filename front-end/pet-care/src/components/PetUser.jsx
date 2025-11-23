@@ -4,7 +4,7 @@ import { getUserPets, addPet } from '../api/petApi';
 import { PlusCircle, X } from 'lucide-react';
 import './userpetProfile.css';
 
-function UserPet() {
+function PetUser() {
   const [pets, setPets] = useState([]);
   const [showAddPetModal, setShowAddPetModal] = useState(false);
   const [petFormData, setPetFormData] = useState({
