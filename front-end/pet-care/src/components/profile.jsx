@@ -407,10 +407,7 @@ function UserDashboard() {
             Registered Pets
           </div>
 
-          {/* UserPet component temporarily removed */}
-          <div className="pets-placeholder">
-            <p>Pet management section will be available soon.</p>
-          </div>
+          <PetUser />
 
           <AppointmentSection/>
 
