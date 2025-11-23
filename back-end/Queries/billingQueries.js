@@ -25,10 +25,13 @@ const ensureBillingTable = () => {
   db.query(sql, (err) => {
     if (err) {
       console.error('Failed to ensure billing table:', err);
+    } else {
+      console.log('Billing table ensured successfully');
     }
   });
 };
 
+// Only run table check once, not on every import
 ensureBillingTable();
 
 const Billing = {
