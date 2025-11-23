@@ -395,4 +395,4 @@ function UserPet() {
   );
 }
 
-export default UserPet;
+export default PetUser;
