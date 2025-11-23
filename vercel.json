@@ -1,1 +1,1 @@
-{"buildCommand": "cd front-end/pet-care && npm install && npm run build", "outputDirectory": "front-end/pet-care/dist", "installCommand": "cd front-end/pet-care && npm install", "framework": "vite"}
+{"buildCommand": "cd front-end/pet-care && npm install && npm run build", "outputDirectory": "front-end/pet-care/dist", "framework": "vite"}
