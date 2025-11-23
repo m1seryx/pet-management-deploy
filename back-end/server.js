@@ -63,5 +63,6 @@ app.get('/test-db', (req, res) => {
 
 app.listen(5000, () => {
   console.log('Server running on port 5000');
+  console.log('CORS fixed for Vercel domain');
   startNotificationScheduler();
 });
