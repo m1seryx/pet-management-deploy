@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Antic+Slab&family=Montagu+Slab:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
 .petrecord-container {
 
   font-family: "Poppins", sans-serif;
@@ -225,6 +227,7 @@ td {
   margin-top: 2rem;
   font-size: 1.2rem;
   color: #4d4d4d;
+  font-family: 'Aoboshi One', serif;
 }
 
 /* ==== RECORD BOX STYLE ==== */

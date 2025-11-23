@@ -42,6 +42,16 @@ export default function Appointment({ closeModal }) {
 
 
   useEffect(() => {
+    // Add modal-open class to body when component mounts
+    document.body.classList.add('modal-open');
+    
+    // Remove class when component unmounts
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -397,6 +407,9 @@ useEffect(() => {
   return (
     <div className="appointment-container">
       <div className="appointment-box">
+        <button className="close-appointment" onClick={closeModal || (() => window.history.back())}>
+          ×
+        </button>
 
         <div className="steps-indicator">
           {[1, 2, 3, 4].map((num) => (
@@ -439,146 +452,163 @@ useEffect(() => {
           {step === 1 && (
             <>
               <h3>Pet Information:</h3>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  checked={hasPet}
-                  onChange={() => {
-                    setHasPet(!hasPet);
-                    if (!hasPet) {
-                      setSelectedPetIds([]);
-                      setPetServices({});
-                    }
-                  }}
-                />
-                <h4>I already have pets on file</h4>
-              </label>
+              
+              {/* Existing pets section */}
+              <div className="pet-section">
+                <div className="pet-section-header">
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      checked={hasPet}
+                      onChange={() => {
+                        setHasPet(!hasPet);
+                        if (!hasPet) {
+                          setSelectedPetIds([]);
+                          setPetServices({});
+                        }
+                      }}
+                    />
+                    <h4 style={{ margin: '0', marginLeft: '8px' }}>I already have pets on file</h4>
+                  </label>
+                </div>
 
-              {hasPet && pets.length > 0 && (
-                <>
-                  <label>Select your pets (you can select multiple):</label>
-                  <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '10px', maxHeight: '200px', overflowY: 'auto' }}>
-                    {pets.map((pet) => (
-                      <label key={pet.pet_id} style={{ display: 'block', marginBottom: '10px', cursor: 'pointer' }}>
-                        <input
-                          type="checkbox"
-                          name="petSelect"
-                          value={pet.pet_id}
-                          checked={selectedPetIds.includes(pet.pet_id)}
-                          onChange={handleChange}
-                        />
-                        <span style={{ marginLeft: '8px' }}>
-                          <strong>{pet.pet_name}</strong> - {pet.species || 'Unknown'} ({pet.breed || 'Unknown'})
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                  
-                  {selectedPetIds.length > 0 && (
-                    <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f0f8ff', borderRadius: '4px' }}>
-                      <strong>Selected Pets ({selectedPetIds.length}):</strong>
-                      {selectedPetIds.map(id => {
-                        const pet = pets.find(p => p.pet_id === id);
-                        return pet ? (
-                          <div key={id} style={{ marginTop: '5px' }}>
-                            🐾 {pet.pet_name} - {pet.species || 'Unknown'}
-                          </div>
-                        ) : null;
-                      })}
+                {hasPet && pets.length > 0 && (
+                  <>
+                    <label>Select your pets (you can select multiple):</label>
+                    <div className="pet-selection-list">
+                      {pets.map((pet) => (
+                        <label key={pet.pet_id}>
+                          <input
+                            type="checkbox"
+                            name="petSelect"
+                            value={pet.pet_id}
+                            checked={selectedPetIds.includes(pet.pet_id)}
+                            onChange={handleChange}
+                          />
+                          <span style={{ marginLeft: '8px' }}>
+                            <strong>{pet.pet_name}</strong> - {pet.species || 'Unknown'} ({pet.breed || 'Unknown'})
+                          </span>
+                        </label>
+                      ))}
                     </div>
-                  )}
-                </>
-              )}
-
-              {/* Add new pets section */}
-              <div style={{ marginTop: '20px', borderTop: '1px solid #ddd', paddingTop: '20px' }}>
-                <h4>Add New Pet(s):</h4>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="pet_name"
-                    placeholder="Pet name"
-                    value={petData.pet_name}
-                    onChange={handleChange}
-                  />
-                  <select
-                    name="species"
-                    value={petData.species}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Species</option>
-                    <option value="Dog">Dog</option>
-                    <option value="Cat">Cat</option>
-                    <option value="Bird">Bird</option>
-                    <option value="Rabbit">Rabbit</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="breed"
-                    placeholder="Breed"
-                    value={petData.breed}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="date"
-                    name="birthdate"
-                    placeholder="Birthdate"
-                    value={petData.birthdate}
-                    onChange={handleChange}
-                    max={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
-                <select
-                  name="gender"
-                  value={petData.gender}
-                  onChange={handleChange}
-                  style={{ width: '100%', marginBottom: '10px' }}
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-                <input
-                  type="text"
-                  name="medical_history"
-                  placeholder="Medical history (optional)"
-                  value={petData.medical_history}
-                  onChange={handleChange}
-                  style={{ width: '100%', marginBottom: '10px' }}
-                />
-                <button
-                  type="button"
-                  onClick={handleAddNewPet}
-                  disabled={!petData.pet_name || !petData.species || !petData.breed || !petData.birthdate || !petData.gender}
-                  style={{ padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                >
-                  Add Pet to List
-                </button>
+                    
+                    {selectedPetIds.length > 0 && (
+                      <div className="pet-added-list" style={{ backgroundColor: '#f0f8ff' }}>
+                        <strong>Selected Pets ({selectedPetIds.length}):</strong>
+                        {selectedPetIds.map(id => {
+                          const pet = pets.find(p => p.pet_id === id);
+                          return pet ? (
+                            <div key={id}>
+                              🐾 {pet.pet_name} - {pet.species || 'Unknown'}
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
-              {newPets.length > 0 && (
-                <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#fff3cd', borderRadius: '4px' }}>
-                  <strong>New Pets to be Added ({newPets.length}):</strong>
-                  {newPets.map((pet, idx) => (
-                    <div key={pet.tempId} style={{ marginTop: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span>🐾 {pet.pet_name} - {pet.species}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveNewPet(pet.tempId)}
-                        style={{ padding: '4px 8px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
+              {/* New pets section */}
+              <div className="pet-section">
+                <div className="pet-section-header">
+                  <h4 style={{ margin: '0' }}>Add New Pet(s)</h4>
                 </div>
-              )}
+                
+                <div className="new-pet-form">
+                  <div className="input-group">
+                    <label htmlFor="">Pet name
+                    <input
+                      type="text"
+                      name="pet_name"
+                      placeholder="Pet name"
+                      value={petData.pet_name}
+                      onChange={handleChange}
+                    />
+                    </label>
+                    <label htmlFor="">Species
+                    <select
+                      name="species"
+                      value={petData.species}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Species</option>
+                      <option value="Dog">Dog</option>
+                      <option value="Cat">Cat</option>
+                      <option value="Bird">Bird</option>
+                      <option value="Rabbit">Rabbit</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    </label>
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="">Breed
+                    <input
+                      type="text"
+                      name="breed"
+                      placeholder="Breed"
+                      value={petData.breed}
+                      onChange={handleChange}
+                    />
+                    </label>
+                   <label className="birthdate">Birthdate
+                    <input
+                      type="date"
+                      name="birthdate"
+                      placeholder="Birthdate"
+                      value={petData.birthdate}
+                      onChange={handleChange}
+                      max={new Date().toISOString().split("T")[0]}
+                    />
+                    </label>
+                  </div>
+                  <select
+                    name="gender"
+                    value={petData.gender}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  <input
+                    type="text"
+                    name="medical_history"
+                    placeholder="Medical history (optional)"
+                    value={petData.medical_history}
+                    onChange={handleChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddNewPet}
+                    disabled={!petData.pet_name || !petData.species || !petData.breed || !petData.birthdate || !petData.gender}
+                    style={{ padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  >
+                    Add Pet to List
+                  </button>
+                </div>
+
+                {newPets.length > 0 && (
+                  <div className="pet-added-list" style={{ backgroundColor: '#fff3cd' }}>
+                    <strong>New Pets to be Added ({newPets.length}):</strong>
+                    {newPets.map((pet, idx) => (
+                      <div key={pet.tempId} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>🐾 {pet.pet_name} - {pet.species}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveNewPet(pet.tempId)}
+                          style={{ padding: '4px 8px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {(selectedPetIds.length > 0 || newPets.length > 0) && (
-                <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#d4edda', borderRadius: '4px' }}>
+                <div style={{ marginTop: '20px', padding: '12px', backgroundColor: '#d4edda', borderRadius: '8px' }}>
                   <strong>Total Pets Selected: {selectedPetIds.length + newPets.length}</strong>
                 </div>
               )}

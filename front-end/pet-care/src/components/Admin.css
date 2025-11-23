@@ -7,6 +7,7 @@
   }
   
   body {
+    font-family: 'Poppins', sans-serif;
     background: white;
     color: #2c3e50;
   }
@@ -107,6 +108,7 @@
     color: #4e4e4e;
     text-decoration: none;
     font-weight: 500;
+    font-family: 'Montagu Slab', serif;
     transition: all 0.3s ease;
     border-left: 4px solid transparent;
   }
@@ -141,6 +143,7 @@
   .main-dash h3{
     font-size: 2rem;
     color: rgb(107, 116, 168);
+    font-family: 'Aoboshi One', serif;
   }
 
   .main-dash h4{
@@ -267,6 +270,7 @@
   font-size: 1.2rem;
   margin-bottom: 1rem;
   font-weight: 600;
+  font-family: 'Aoboshi One', serif;
   color: #303f9f;
 }
 

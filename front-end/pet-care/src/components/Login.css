@@ -65,7 +65,7 @@
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 1px;
-  font-family: "Montagu Slab", serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ===== Headings ===== */
@@ -73,6 +73,7 @@ h2 {
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 2rem;
+  font-family: 'Aoboshi One', serif;
 }
 
 /* ===== Form Inputs ===== */

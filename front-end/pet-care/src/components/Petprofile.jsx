@@ -307,7 +307,7 @@ function PetProfile() {
               
               <div className="upload-section">
                 <label htmlFor="pet-picture-upload" className="upload-button">
-                  <Camera size={20} />
+                  
                   Choose New Picture
                 </label>
                 <input

@@ -107,11 +107,7 @@ useEffect(() => {
     setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
   };
 
-  const updateTime = (id, newTime) => {
-    setAppointments(prev => prev.map(a => a.id === id ? { ...a, time: newTime } : a));
-  };
-
- const handleAccept = async (id) => {
+  const handleAccept = async (id) => {
   setError(null);
   setIsAccepting(true);
   try {
@@ -228,7 +224,7 @@ useEffect(() => {
                   <th>Pet</th>
                   <th>Service</th>
                   <th>Date</th>
-                  <th>Time (select)</th>
+                  <th>Time</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -240,17 +236,7 @@ useEffect(() => {
                       <td>{item.pet}</td>
                       <td>{item.service}</td>
                       <td>{item.date}</td>
-                      <td>
-                        <select
-                          value={item.time}
-                          onChange={(e) => updateTime(item.id, e.target.value)}
-                          className="time-select"
-                        >
-                          {getAvailableTimes(item.service).map(t => (
-                            <option key={t} value={t}>{t}</option>
-                          ))}
-                        </select>
-                      </td>
+                      <td>{item.time}</td>
                       <td className="actions-td">
                         {item.status === "Pending" && (
                           <>

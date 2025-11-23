@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Antic+Slab&family=Montagu+Slab:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 .grid-container-admin {
   font-family: "Poppins", sans-serif;
@@ -109,6 +109,7 @@
   margin: 0;
   font-size: 1.4rem;
   color: #1f2937;
+  font-family: 'Aoboshi One', serif;
 }
 
 .page-title h4 {
@@ -217,6 +218,7 @@
   text-align: left;
   font-weight: 600;
   color: #6b7280;
+  font-family: 'Montagu Slab', serif;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

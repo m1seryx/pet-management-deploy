@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserPets, addPet } from '../api/petApi';
 import { PlusCircle, X } from 'lucide-react';
+import './userpetProfile.css';
 
 function UserPet() {
   const [pets, setPets] = useState([]);
@@ -313,19 +314,20 @@ function UserPet() {
                   </div>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+              <div className='modal-buttons'>
                 <button
                   type="button"
                   onClick={handleCloseModal}
                   disabled={loading}
-                  style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}
+                  className="btn-cancel"
+              
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: '#667eea', color: 'white', cursor: 'pointer', fontWeight: '600' }}
+                  className="btn-save"
                 >
                   {loading ? 'Adding...' : 'Add Pet'}
                 </button>
