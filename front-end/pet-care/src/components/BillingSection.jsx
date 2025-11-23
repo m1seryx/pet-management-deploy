@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CreditCard } from 'lucide-react';
-import { getUserBilling, payBilling } from '../api/billingApi';
+import { getUserBilling, payBilling, createPayPalOrder } from '../api/billingApi';
 import './billingSection.css';
 
 
@@ -90,33 +90,28 @@ function BillingSection() {
   });
 
   const handlePay = async (billing) => {
-
     setPayingId(billing.billing_id);
     try {
-      const res = await fetch('/api/payment/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: billing.amount, billingId: billing.billing_id }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
+      const response = await createPayPalOrder(billing.amount, billing.billing_id);
+      
+      if (!response.success) {
         setNotification({
           title: 'Payment error',
-          message: json.error || 'Failed to create PayPal order',
+          message: response.error || 'Failed to create PayPal order',
         });
         setPayingId(null);
         return;
       }
 
-   
+      const json = { id: response.id, approvalUrl: response.approvalUrl };
+      
       try {
         if (json.id) localStorage.setItem('paypal_last_order', json.id);
         if (billing.billing_id) localStorage.setItem('paypal_billing_id', billing.billing_id);
       } catch (e) {
-     
+        // Ignore localStorage errors
       }
 
-  
       window.open(json.approvalUrl, '_blank');
 
       setNotification({

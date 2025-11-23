@@ -1,4 +1,5 @@
 const BASE_URL = 'https://pet-management-backend.onrender.com/billing';
+const PAYMENT_BASE_URL = 'https://pet-management-backend.onrender.com/api/payment';
 
 const buildHeaders = () => {
   const token = localStorage.getItem('token');
@@ -62,6 +63,46 @@ export async function adminPayBilling(billingId, payment_reference = '') {
   } catch (error) {
     console.error('Admin pay billing error:', error);
     return { success: false, message: 'Something went wrong while recording payment' };
+  }
+}
+
+export async function createPayPalOrder(amount, billingId) {
+  try {
+    const response = await fetch(`${PAYMENT_BASE_URL}/create-order`, {
+      method: 'POST',
+      headers: buildHeaders(),
+      body: JSON.stringify({ amount, billingId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return { success: false, error: data.error || 'Failed to create PayPal order' };
+    }
+
+    return { success: true, id: data.id, approvalUrl: data.approvalUrl };
+  } catch (error) {
+    console.error('Create PayPal order error:', error);
+    return { success: false, error: 'Network error creating PayPal order' };
+  }
+}
+
+export async function capturePayPalOrder(orderID, billingId) {
+  try {
+    const response = await fetch(`${PAYMENT_BASE_URL}/capture-order`, {
+      method: 'POST',
+      headers: buildHeaders(),
+      body: JSON.stringify({ orderID, billingId }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return { success: false, error: data.error || 'Failed to capture PayPal payment' };
+    }
+
+    return { success: true, status: data.status, data: data.data };
+  } catch (error) {
+    console.error('Capture PayPal order error:', error);
+    return { success: false, error: 'Network error capturing PayPal payment' };
   }
 }
 
