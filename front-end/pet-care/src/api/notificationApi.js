@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/notifications';
+const BASE_URL = 'https://pet-management-backend.onrender.com/notifications';
 
 const buildHeaders = () => {
   const token = localStorage.getItem('token');

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/analytics';
+const BASE_URL = 'https://pet-management-backend.onrender.com/analytics';
 
 export async function fetchAnalyticsOverview() {
   const token = localStorage.getItem('token');

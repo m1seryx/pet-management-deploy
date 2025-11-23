@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/services';
+const BASE_URL = 'https://pet-management-backend.onrender.com/services';
 
 
 export async function getAllServices() {

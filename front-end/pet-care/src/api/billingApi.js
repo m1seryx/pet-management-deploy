@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/billing';
+const BASE_URL = 'https://pet-management-backend.onrender.com/billing';
 
 const buildHeaders = () => {
   const token = localStorage.getItem('token');
