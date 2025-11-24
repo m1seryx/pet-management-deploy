@@ -31,7 +31,40 @@ const runMigrations = () => {
   addColumnSafely('service', 'price', 'DECIMAL(10,2) DEFAULT 0');
   addColumnSafely('appointment', 'cancellation_reason', 'VARCHAR(255) NULL');
   addColumnSafely('notification', 'created_at', 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP');
-  addColumnSafely('notification', 'notification_id', 'INT AUTO_INCREMENT PRIMARY KEY');
+  
+  // Handle notification_id more carefully to avoid ER_WRONG_AUTO_KEY
+  const checkNotificationPK = () => {
+    const checkSql = `SELECT COLUMN_NAME, COLUMN_KEY 
+                      FROM INFORMATION_SCHEMA.COLUMNS 
+                      WHERE TABLE_SCHEMA = DATABASE() 
+                      AND TABLE_NAME = 'notification' 
+                      AND COLUMN_KEY = 'PRI'`;
+    
+    db.query(checkSql, (err, result) => {
+      if (!err && result.length === 0) {
+        // No primary key exists, try to add notification_id as primary key
+        const checkColumnSql = `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+                                WHERE TABLE_SCHEMA = DATABASE() 
+                                AND TABLE_NAME = 'notification' 
+                                AND COLUMN_NAME = 'notification_id'`;
+        
+        db.query(checkColumnSql, (colErr, colResult) => {
+          if (!colErr && colResult.length === 0) {
+            // Column doesn't exist, add it as primary key
+            const alterSql = `ALTER TABLE notification ADD COLUMN notification_id INT AUTO_INCREMENT PRIMARY KEY FIRST`;
+            db.query(alterSql, (alterErr) => {
+              if (alterErr) {
+                console.error(`Failed to add notification_id to notification:`, alterErr.code);
+              } else {
+                console.log(`Added notification_id to notification`);
+              }
+            });
+          }
+        });
+      }
+    });
+  };
+  checkNotificationPK();
   addColumnSafely('pet', 'birthdate', 'DATE NULL');
   addColumnSafely('pet', 'species', 'VARCHAR(50) NULL');
   addColumnSafely('user', 'profile_picture', 'LONGTEXT NULL');
